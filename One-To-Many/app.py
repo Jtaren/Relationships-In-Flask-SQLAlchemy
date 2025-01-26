@@ -8,6 +8,7 @@ database_path = "postgresql://{}:{}@{}/{}".format("postgres", "eazye5000", "loca
 app.config['SQLALCHEMY_DATABASE_URI'] = database_path
 app.config['SQLALCHEMY_TRACK_MODIFICATIONs'] = False
 db = SQLAlchemy(app)
+app.app_context().push()
 
 class Owner(db.Model):
     id = db.Column(db.Integer, primary_key=True)
