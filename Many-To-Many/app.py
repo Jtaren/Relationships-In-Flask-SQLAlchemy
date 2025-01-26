@@ -5,12 +5,15 @@ from flask_sqlalchemy import SQLAlchemy
 app = Flask(__name__)
 
 database_name = "many_to_many"
-database_path = "postgresql://{}:{}@{}/{}".format("postgres", "eazye5000", "local:5432", database_name)
+database_path = "postgresql://{}:{}@{}/{}".format("postgres", "eazye5000", "localhost:5432", database_name)
 app.config['SQLALCHEMY_DATABASE_URI'] = database_path
 db = SQLAlchemy(app)
 app.app_context().push()
 
-user_channel = db.Table('user_channel', db.Column('user_id', db.Integer, db.ForeignKey('user.id')))
+user_channel = db.Table('user_channel', 
+                        db.Column('user_id', db.Integer, db.ForeignKey('user.id')),
+                        db.Column('channel_id', db.Integer, db.ForeignKey('channel.id'))
+                        )
 
 class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
