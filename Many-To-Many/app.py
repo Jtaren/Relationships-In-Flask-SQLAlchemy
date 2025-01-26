@@ -1,6 +1,6 @@
 
 from flask import Flask
-from flask_sqlachemy import SQLAlchemy
+from flask_sqlalchemy import SQLAlchemy
 
 app = Flask(__name__)
 
@@ -10,9 +10,12 @@ app.config['SQLALCHEMY_DATABASE_URI'] = database_path
 db = SQLAlchemy(app)
 app.app_context().push()
 
+user_channel = db.Table('user_channel', db.Column('user_id', db.Integer, db.ForeignKey('user.id')))
+
 class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(20))
+    following = db.relationship('Channel', secondary=user_channel, backref='followers')
 
     def __repr__(self):
         return f'<User: {self.name}>'
